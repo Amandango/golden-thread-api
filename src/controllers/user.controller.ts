@@ -1,4 +1,4 @@
-import { get, post, requestBody } from "@loopback/rest";
+import { get, post, requestBody, HttpErrors, param} from "@loopback/rest";
 import { repository } from "@loopback/repository";
 import { UserRepository } from "../repositories/user.repository";
 import { User } from "../models/user";
@@ -10,23 +10,20 @@ export class UserController {
   ) {
   }
 
-  @get('/user')
-  async getAllUsers(): Promise<Array<User>> { 
-    return await this.userRepo.find(); 
+  @get('/users')
+  async findUsers(): Promise<User[]> {
+    return await this.userRepo.find();
   }
+  
+  @get('/users/{id}')
+  async findUsersById(@param.path.number('id') id: number): Promise<User> {
+    let userExists: boolean = !!(await this.userRepo.count({ id }));
 
-  @post("/user/:id")
-  async postUserId (@requestBody() id: number) {
-    var users = await this.userRepo.find();
-    for (var i=0; i < users.length; i++) {
-      var user = users[i];
-      if(id == user.id) {
-        return [
-          user.username,
-          user.email,
-          user.password
-        ]
-        }
-      }
+    if (!userExists) {
+      throw new HttpErrors.BadRequest(`user ID ${id} does not exist`);
+    }
+
+    return await this.userRepo.findById(id);
+
   }
 }

@@ -14,38 +14,24 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const rest_1 = require("@loopback/rest");
 const repository_1 = require("@loopback/repository");
-const user_repository_1 = require("../repositories/user.repository");
-let UserController = class UserController {
-    constructor(userRepo) {
-        this.userRepo = userRepo;
+const charities_repository_1 = require("../repositories/charities.repository");
+let LoginController = class LoginController {
+    constructor(charitiesRepo) {
+        this.charitiesRepo = charitiesRepo;
     }
-    async findUsers() {
-        return await this.userRepo.find();
-    }
-    async findUsersById(id) {
-        let userExists = !!(await this.userRepo.count({ id }));
-        if (!userExists) {
-            throw new rest_1.HttpErrors.BadRequest(`user ID ${id} does not exist`);
-        }
-        return await this.userRepo.findById(id);
+    async allCharities() {
+        return await this.charitiesRepo.find();
     }
 };
 __decorate([
-    rest_1.get('/users'),
+    rest_1.get('/allCharities'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "findUsers", null);
-__decorate([
-    rest_1.get('/users/{id}'),
-    __param(0, rest_1.param.path.number('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "findUsersById", null);
-UserController = __decorate([
-    __param(0, repository_1.repository(user_repository_1.UserRepository.name)),
-    __metadata("design:paramtypes", [user_repository_1.UserRepository])
-], UserController);
-exports.UserController = UserController;
-//# sourceMappingURL=user.controller.js.map
+], LoginController.prototype, "allCharities", null);
+LoginController = __decorate([
+    __param(0, repository_1.repository(charities_repository_1.CharitiesRepository.name)),
+    __metadata("design:paramtypes", [charities_repository_1.CharitiesRepository])
+], LoginController);
+exports.LoginController = LoginController;
+//# sourceMappingURL=charity.controller.js.map

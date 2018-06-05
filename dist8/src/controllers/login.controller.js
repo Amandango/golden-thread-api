@@ -15,30 +15,41 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const rest_1 = require("@loopback/rest");
 const repository_1 = require("@loopback/repository");
 const user_repository_1 = require("../repositories/user.repository");
-const login_1 = require("../models/login");
+const user_1 = require("../models/user");
 let LoginController = class LoginController {
     constructor(userRepo) {
         this.userRepo = userRepo;
     }
-    async login(login) {
-        var users = await this.userRepo.find();
-        var email = login.email;
-        var password = login.password;
-        for (var i = 0; i < users.length; i++) {
-            var user = users[i];
-            if (email == user.email && password == user.password) {
-                return "successful!";
-            }
+    async loginUser(user) {
+        if (!user.email || !user.password) {
+            throw new rest_1.HttpErrors.Unauthorized('invalid credentials');
         }
+        let userExists = !!(await this.userRepo.count({
+            and: [
+                { email: user.email },
+                { password: user.password },
+            ],
+        }));
+        if (!userExists) {
+            throw new rest_1.HttpErrors.Unauthorized('invalid credentials');
+        }
+        return await this.userRepo.findOne({
+            where: {
+                and: [
+                    { email: user.email },
+                    { password: user.password }
+                ],
+            }
+        });
     }
 };
 __decorate([
-    rest_1.post("/login"),
+    rest_1.post('/login'),
     __param(0, rest_1.requestBody()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [login_1.Login]),
+    __metadata("design:paramtypes", [user_1.User]),
     __metadata("design:returntype", Promise)
-], LoginController.prototype, "login", null);
+], LoginController.prototype, "loginUser", null);
 LoginController = __decorate([
     __param(0, repository_1.repository(user_repository_1.UserRepository.name)),
     __metadata("design:paramtypes", [user_repository_1.UserRepository])

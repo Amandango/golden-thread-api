@@ -14,38 +14,35 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const rest_1 = require("@loopback/rest");
 const repository_1 = require("@loopback/repository");
-const user_repository_1 = require("../repositories/user.repository");
-let UserController = class UserController {
-    constructor(userRepo) {
-        this.userRepo = userRepo;
+const charities_repository_1 = require("../repositories/charities.repository");
+const charities_1 = require("../models/charities");
+let CharitiesController = class CharitiesController {
+    constructor(charitiesRepo) {
+        this.charitiesRepo = charitiesRepo;
     }
-    async findUsers() {
-        return await this.userRepo.find();
+    async findCharities() {
+        return await this.charitiesRepo.find();
     }
-    async findUsersById(id) {
-        let userExists = !!(await this.userRepo.count({ id }));
-        if (!userExists) {
-            throw new rest_1.HttpErrors.BadRequest(`user ID ${id} does not exist`);
-        }
-        return await this.userRepo.findById(id);
+    async postCharities(charity) {
+        return await this.charitiesRepo.create(charity);
     }
 };
 __decorate([
-    rest_1.get('/users'),
+    rest_1.get('/allCharities'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "findUsers", null);
+], CharitiesController.prototype, "findCharities", null);
 __decorate([
-    rest_1.get('/users/{id}'),
-    __param(0, rest_1.param.path.number('id')),
+    rest_1.post("/charities"),
+    __param(0, rest_1.requestBody()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [charities_1.Charities]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "findUsersById", null);
-UserController = __decorate([
-    __param(0, repository_1.repository(user_repository_1.UserRepository.name)),
-    __metadata("design:paramtypes", [user_repository_1.UserRepository])
-], UserController);
-exports.UserController = UserController;
-//# sourceMappingURL=user.controller.js.map
+], CharitiesController.prototype, "postCharities", null);
+CharitiesController = __decorate([
+    __param(0, repository_1.repository(charities_repository_1.CharitiesRepository.name)),
+    __metadata("design:paramtypes", [charities_repository_1.CharitiesRepository])
+], CharitiesController);
+exports.CharitiesController = CharitiesController;
+//# sourceMappingURL=charities.controller.js.map

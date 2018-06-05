@@ -14,7 +14,12 @@ class GoldenThreadApiApplication extends boot_1.BootMixin(repository_1.Repositor
         this.sequence(sequence_1.MySequence);
         var dataSourceConfig = new repository_1.juggler.DataSource({
             name: "db",
-            connector: "memory"
+            connector: "loopback-connector-mysql",
+            host: 'localhost',
+            port: 3306,
+            database: 'golden-thread',
+            user: 'root',
+            password: '',
         });
         this.dataSource(dataSourceConfig);
         this.projectRoot = __dirname;
