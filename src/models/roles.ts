@@ -1,7 +1,7 @@
 import { Entity, property, model } from '@loopback/repository';
 
 @model()
-export class Charities extends Entity {
+export class Roles extends Entity {
 
     @property({
         type: 'number',
@@ -13,22 +13,18 @@ export class Charities extends Entity {
         type: 'string',
         required: true
     })
-    name: string;
+    admin: boolean;
 
     @property({
         type: 'string',
         required: true
     })
-    desc: string;
+    user: boolean;
 
     @property({
         type: 'string',
         required: true
     })
-    logo: string;
-
-    getId() {
-        return this.id;
-    }
+    super: boolean;
 
 }

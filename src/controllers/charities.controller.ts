@@ -19,4 +19,6 @@ export class CharitiesController {
     return await this.charitiesRepo.create(charity);
   }
 
+  
+
 }

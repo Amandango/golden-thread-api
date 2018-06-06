@@ -22,7 +22,8 @@ export class LoginController {
         { email: user.email } ,
         { password: user.password },
       ],
-    }))
+    }));
+
     if (!userExists) {
       throw new HttpErrors.Unauthorized('invalid credentials');
     }

@@ -57,6 +57,12 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
+__decorate([
+    repository_1.property({}),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], User.prototype, "getId", null);
 User = __decorate([
     repository_1.model()
 ], User);
