@@ -10,38 +10,39 @@ export class Interests extends Entity {
     id?: number;
 
     @property({
-        type: 'string',
+        type: 'boolean',
         required: true
     })
     animalRights: boolean;
 
     @property({
-        type: 'string',
+        type: 'boolean',
         required: true
     })
     environment: boolean;
 
     @property({
-        type: 'string',
+        type: 'boolean',
         required: true
     })
     humanRights: boolean;
 
     @property({
-        type: 'string',
+        type: 'boolean',
         required: true
     })
     health: boolean;
 
     @property({
-        type: 'string',
+        type: 'boolean',
         required: true
     })
     poverty: boolean;
 
     @property({
-        type: 'string',
+        type: 'boolean',
         required: true
     })
     foodWaterScarcity: boolean;
+
 }

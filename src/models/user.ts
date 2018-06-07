@@ -38,10 +38,6 @@ export class User extends Entity {
     })
     password: string;
 
-    @property({
-        
-    })
-
     getId() {
         return this.id;
     }

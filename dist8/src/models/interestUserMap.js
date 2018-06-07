@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const repository_1 = require("@loopback/repository");
-let Interests = class Interests extends repository_1.Entity {
+let InterestUserMap = class InterestUserMap extends repository_1.Entity {
 };
 __decorate([
     repository_1.property({
@@ -18,51 +18,23 @@ __decorate([
         id: true
     }),
     __metadata("design:type", Number)
-], Interests.prototype, "id", void 0);
+], InterestUserMap.prototype, "id", void 0);
 __decorate([
     repository_1.property({
-        type: 'boolean',
+        type: 'number',
         required: true
     }),
-    __metadata("design:type", Boolean)
-], Interests.prototype, "animalRights", void 0);
+    __metadata("design:type", Number)
+], InterestUserMap.prototype, "userId", void 0);
 __decorate([
     repository_1.property({
-        type: 'boolean',
+        type: 'number',
         required: true
     }),
-    __metadata("design:type", Boolean)
-], Interests.prototype, "environment", void 0);
-__decorate([
-    repository_1.property({
-        type: 'boolean',
-        required: true
-    }),
-    __metadata("design:type", Boolean)
-], Interests.prototype, "humanRights", void 0);
-__decorate([
-    repository_1.property({
-        type: 'boolean',
-        required: true
-    }),
-    __metadata("design:type", Boolean)
-], Interests.prototype, "health", void 0);
-__decorate([
-    repository_1.property({
-        type: 'boolean',
-        required: true
-    }),
-    __metadata("design:type", Boolean)
-], Interests.prototype, "poverty", void 0);
-__decorate([
-    repository_1.property({
-        type: 'boolean',
-        required: true
-    }),
-    __metadata("design:type", Boolean)
-], Interests.prototype, "foodWaterScarcity", void 0);
-Interests = __decorate([
+    __metadata("design:type", Number)
+], InterestUserMap.prototype, "interestId", void 0);
+InterestUserMap = __decorate([
     repository_1.model()
-], Interests);
-exports.Interests = Interests;
-//# sourceMappingURL=interests.js.map
+], InterestUserMap);
+exports.InterestUserMap = InterestUserMap;
+//# sourceMappingURL=interestUserMap.js.map

@@ -16,52 +16,79 @@ const rest_1 = require("@loopback/rest");
 const repository_1 = require("@loopback/repository");
 const donations_repository_1 = require("../repositories/donations.repository");
 const donations_1 = require("../models/donations");
+const charities_repository_1 = require("../repositories/charities.repository");
 let DonationsController = class DonationsController {
-    constructor(donationsRepo) {
+    constructor(donationsRepo, charitiesRepo) {
         this.donationsRepo = donationsRepo;
+        this.charitiesRepo = charitiesRepo;
     }
     async findDonationsByUser(userId) {
         return await this.donationsRepo.find({ where: { userId: userId } });
     }
+    async getAllDonations() {
+        return await this.donationsRepo.find();
+    }
     async makeDonation(donation) {
         return await this.donationsRepo.create(donation);
     }
-    async findCharitiesByUser(userId, charityId) {
-        return await this.donationsRepo.find({
-            where: {
-                and: [
-                    { userId: userId },
-                    { charityId: charityId }
-                ],
-            }
-        });
+    async findCharitiesByUser(userId) {
+        var donations = await this.donationsRepo.find({ where: { userId: userId } });
+        var userCharityIds = [];
+        for (var i = 0; i < donations.length; i++) {
+            userCharityIds.push(donations[i].charityId);
+        }
+        var userCharityInfo = [];
+        for (var i = 0; i < userCharityIds.length; i++) {
+            var intermediateCharity = await this.charitiesRepo.findOne({ where: { id: userCharityIds[i] } });
+            userCharityInfo.push(intermediateCharity);
+        }
+        {
+            return userCharityInfo;
+        }
+    }
+    async findDonationsByCharity(charityId) {
+        return await this.donationsRepo.find({ where: { charityId: charityId } });
     }
 };
 __decorate([
     rest_1.get('/donations/{userId}'),
-    __param(0, rest_1.param.query.string('userId')),
+    __param(0, rest_1.param.query.number('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], DonationsController.prototype, "findDonationsByUser", null);
 __decorate([
-    rest_1.post('donations'),
+    rest_1.get('/allDonations'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], DonationsController.prototype, "getAllDonations", null);
+__decorate([
+    rest_1.post('/donations'),
     __param(0, rest_1.requestBody()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [donations_1.Donations]),
     __metadata("design:returntype", Promise)
 ], DonationsController.prototype, "makeDonation", null);
 __decorate([
-    rest_1.get('/donations/{userId}/{charityId}'),
+    rest_1.get('/donations/{userId}/charityId'),
     __param(0, rest_1.param.query.string('userId')),
-    __param(1, rest_1.param.query.string('charityId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], DonationsController.prototype, "findCharitiesByUser", null);
+__decorate([
+    rest_1.get('/donations/{charityId}'),
+    __param(0, rest_1.param.query.number('charityId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], DonationsController.prototype, "findDonationsByCharity", null);
 DonationsController = __decorate([
     __param(0, repository_1.repository(donations_repository_1.DonationsRepository.name)),
-    __metadata("design:paramtypes", [donations_repository_1.DonationsRepository])
+    __param(1, repository_1.repository(charities_repository_1.CharitiesRepository.name)),
+    __metadata("design:paramtypes", [donations_repository_1.DonationsRepository,
+        charities_repository_1.CharitiesRepository])
 ], DonationsController);
 exports.DonationsController = DonationsController;
 //# sourceMappingURL=donations.controller.js.map
